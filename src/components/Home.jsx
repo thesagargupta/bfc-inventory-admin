@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Home.css";
 import { IoLogOutOutline } from "react-icons/io5";
 
-const API_URL = "https://bfc-inventory-backend.onrender.com/api/categories";
+const API_URL = "http://localhost:5000/api/categories";
 
 function Home({ onLogout }) {
   const [categories, setCategories] = useState([]);
