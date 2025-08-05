@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import "./Home.css";
 import { IoLogOutOutline } from "react-icons/io5";
 
-const API_URL = "https://bfc-inventory-backend.onrender.com/api/categories";
+const API_URL = "http://localhost:5000/api/categories";
 
 function Home({ onLogout }) {
   const [categories, setCategories] = useState([]);
   const FIXED_CATEGORIES = [
-    "dairy", "poultry", "bakery", "grocery",
-    "fruits", "vegitables", "packaging", "mezza"
+    "Dairy", "Poultry", "Bakery", "Grocery",
+    "Fruits", "Vegitables", "Packaging", "Mezza"
   ];
   const [categoryName, setCategoryName] = useState("");
   const [items, setItems] = useState([{ name: "", unit: "" }]);
