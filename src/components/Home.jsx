@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./Home.css";
 import { IoLogOutOutline } from "react-icons/io5";
+import toast, { Toaster } from "react-hot-toast";
 
-const API_URL = "https://bfc-inventory-backend.onrender.com/api/categories";
+const API_URL = "http://localhost:5000/api/categories";
 
 function Home({ onLogout }) {
   const [categories, setCategories] = useState([]);
@@ -13,7 +14,6 @@ function Home({ onLogout }) {
   const [categoryName, setCategoryName] = useState("");
   const [items, setItems] = useState([{ name: "", unit: "" }]);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
   const [activeTab, setActiveTab] = useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
   const [editMode, setEditMode] = useState(false);
@@ -32,7 +32,7 @@ function Home({ onLogout }) {
         setActiveTab(data[0].name);
       }
     } catch {
-      setMessage("Failed to fetch categories");
+      toast.error("Failed to fetch categories");
     }
     setLoading(false);
   };
@@ -53,10 +53,11 @@ function Home({ onLogout }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!categoryName.trim() || items.some(i => !i.name.trim() || !i.unit.trim())) {
-      setMessage("Category name and all item fields are required");
+      toast.error("Category name and all item fields are required");
       return;
     }
     setLoading(true);
+    const toastId = toast.loading('Saving category...');
     try {
       const res = await fetch(API_URL, {
         method: "POST",
@@ -65,44 +66,139 @@ function Home({ onLogout }) {
       });
       const data = await res.json();
       if (res.ok) {
-        setMessage("✅ Category saved!");
+        toast.success("Category saved!", { id: toastId });
         setCategoryName("");
         setItems([{ name: "", unit: "" }]);
         fetchCategories();
         setActiveTab(categoryName);
       } else {
-        setMessage(data.error || "❌ Failed to save category");
+        toast.error(data.error || "Failed to save category", { id: toastId });
       }
     } catch {
-      setMessage("❌ Failed to save category");
+      toast.error("Failed to save category", { id: toastId });
     }
     setLoading(false);
   };
 
-  const handleDelete = async (name) => {
-    if (!window.confirm(`Delete category ${name}?`)) return;
+  const handleDelete = (name) => {
+    toast((t) => (
+     <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+  {/* Item 1: The text */}
+  <span>
+    Delete category <b>{name}</b>?
+  </span>
+
+  {/* Item 2: The 'Yes' button */}
+  <button
+    onClick={() => {
+      toast.dismiss(t.id);
+      deleteCategory(name);
+    }}
+    style={{
+      background: '#f44336',
+      color: 'white',
+      border: 'none',
+      padding: '8px 12px',
+      borderRadius: '4px',
+      cursor: 'pointer'
+    }}
+  >
+    Yes
+  </button>
+
+  {/* Item 3: The 'No' button */}
+  <button
+    onClick={() => toast.dismiss(t.id)}
+    style={{
+      background: '#ccc',
+      color: 'black',
+      border: 'none',
+      padding: '8px 12px',
+      borderRadius: '4px',
+      cursor: 'pointer'
+    }}
+  >
+    No
+  </button>
+</span>
+    ));
+  };
+
+  const deleteCategory = async (name) => {
     setLoading(true);
+    const toastId = toast.loading('Deleting category...');
     try {
       const res = await fetch(`${API_URL}/${encodeURIComponent(name)}`, {
         method: "DELETE",
       });
       if (res.ok) {
-        setMessage("🗑️ Category deleted");
-        fetchCategories();
+        toast.success("Category deleted", { id: toastId });
+        const newCategories = categories.filter(c => c.name !== name);
+        setCategories(newCategories);
+        if (activeTab === name) {
+          if (newCategories.length > 0) {
+            setActiveTab(newCategories[0].name);
+          } else {
+            setActiveTab(null);
+          }
+        }
       } else {
-        setMessage("❌ Failed to delete");
+        toast.error("Failed to delete category", { id: toastId });
       }
     } catch {
-      setMessage("❌ Failed to delete");
+      toast.error("Failed to delete category", { id: toastId });
     }
     setLoading(false);
   };
 
-  // Delete selected items from a category
-  const handleDeleteItems = async (catName) => {
+  const handleDeleteItems = (catName) => {
     if (selectedItems.length === 0) return;
-    if (!window.confirm(`Delete selected items from ${catName}?`)) return;
+    toast((t) => (
+      <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+  {/* Item 1: The confirmation text */}
+  <span>
+    Delete {selectedItems.length} item(s) from <b>{catName}</b>?
+  </span>
+
+  {/* Item 2: The 'Yes' button */}
+  <button
+    onClick={() => {
+      toast.dismiss(t.id);
+      deleteItems(catName);
+    }}
+    style={{
+      background: '#f44336',
+      color: 'white',
+      border: 'none',
+      padding: '8px 12px',
+      borderRadius: '4px',
+      cursor: 'pointer'
+    }}
+  >
+    Yes
+  </button>
+
+  {/* Item 3: The 'No' button */}
+  <button
+    onClick={() => toast.dismiss(t.id)}
+    style={{
+      background: '#ccc',
+      color: 'black',
+      border: 'none',
+      padding: '8px 12px',
+      borderRadius: '4px',
+      cursor: 'pointer'
+    }}
+  >
+    No
+  </button>
+</span>
+    ));
+  };
+
+  const deleteItems = async (catName) => {
     setLoading(true);
+    const toastId = toast.loading('Deleting item(s)...');
     try {
       const res = await fetch(`${API_URL}/${encodeURIComponent(catName)}/delete-items`, {
         method: "POST",
@@ -111,21 +207,22 @@ function Home({ onLogout }) {
       });
       const data = await res.json();
       if (res.ok) {
-        setMessage("🗑️ Item(s) deleted");
+        toast.success("Item(s) deleted", { id: toastId });
         setSelectedItems([]);
         setEditMode(false);
-        fetchCategories();
+        fetchCategories(); // Refetch to update the UI
       } else {
-        setMessage(data.error || "❌ Failed to delete items");
+        toast.error(data.error || "Failed to delete items", { id: toastId });
       }
     } catch {
-      setMessage("❌ Failed to delete items");
+      toast.error("Failed to delete items", { id: toastId });
     }
     setLoading(false);
   };
 
   return (
     <div className="home-container">
+      <Toaster position="top-center" reverseOrder={false} />
       <div className="topbar">
         <h2>Admin: Add/Edit Inventory Category</h2>
         <IoLogOutOutline
@@ -190,8 +287,6 @@ function Home({ onLogout }) {
         </button>
       </form>
 
-      {message && <div className={`message ${message.startsWith("✅") ? "success" : "error"}`}>{message}</div>}
-
       <h3>Existing Categories</h3>
       <div className="category-tabs">
         {categories.map((cat) => (
@@ -205,7 +300,7 @@ function Home({ onLogout }) {
         ))}
       </div>
 
-      {loading ? (
+      {loading && categories.length === 0 ? ( // Show loading only on initial fetch
         <div className="loading">Loading...</div>
       ) : (
         <div className="category-tab-content">

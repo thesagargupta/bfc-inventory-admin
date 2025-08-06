@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import './Login.css';
+import toast, { Toaster } from 'react-hot-toast';
 
 function Login({ onLogin }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -16,12 +16,13 @@ function Login({ onLogin }) {
     if (username === validUser && password === validPass) {
       onLogin();
     } else {
-      setError('Invalid credentials');
+      toast.error('Invalid credentials');
     }
   };
 
   return (
     <div className="login-container">
+      <Toaster position="top-center" reverseOrder={false} />
       <h2>Admin Login</h2>
       <form onSubmit={handleLogin} className="login-form">
         <input
@@ -39,7 +40,6 @@ function Login({ onLogin }) {
           required
         />
         <button type="submit">Login</button>
-        {error && <p className="error">{error}</p>}
       </form>
     </div>
   );
