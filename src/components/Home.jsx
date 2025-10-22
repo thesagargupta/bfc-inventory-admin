@@ -4,7 +4,7 @@ import { IoLogOutOutline } from "react-icons/io5";
 import toast, { Toaster } from "react-hot-toast";
 import ExcelUpload from "./ExcelUpload";
 
-const API_URL = "http://localhost:5000/api/categories";
+const API_URL = "https://bfc-inventory-backend.onrender.com/api/categories";
 
 function Home({ onLogout }) {
   const [categories, setCategories] = useState([]);
