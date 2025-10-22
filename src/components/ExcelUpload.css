@@ -1,0 +1,261 @@
+.excel-upload-container {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
+}
+
+.excel-upload-header {
+  margin-bottom: 20px;
+}
+
+.excel-upload-header h3 {
+  margin: 0 0 8px 0;
+  color: #333;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.excel-upload-header p {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.template-download {
+  margin-bottom: 20px;
+}
+
+.download-template-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.download-template-btn:hover {
+  background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+}
+
+.download-template-btn svg {
+  font-size: 18px;
+}
+
+.drop-zone {
+  border: 3px dashed #ddd;
+  border-radius: 12px;
+  padding: 40px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #fafafa;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.drop-zone:hover {
+  border-color: #2196f3;
+  background: #f5f9ff;
+}
+
+.drop-zone.drag-active {
+  border-color: #2196f3;
+  background: #e3f2fd;
+  transform: scale(1.02);
+}
+
+.upload-icon {
+  font-size: 64px;
+  color: #2196f3;
+  margin-bottom: 16px;
+}
+
+.file-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.file-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  margin: 0;
+}
+
+.file-size {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.upload-text p {
+  margin: 8px 0;
+  color: #333;
+  font-size: 16px;
+}
+
+.upload-subtext {
+  color: #666 !important;
+  font-size: 14px !important;
+}
+
+.file-types {
+  color: #999 !important;
+  font-size: 12px !important;
+  margin-top: 12px !important;
+}
+
+.upload-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.upload-btn {
+  background: linear-gradient(135deg, #1976d2 0%, #2196f3 100%);
+  color: white;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.upload-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1565c0 0%, #1976d2 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+.upload-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cancel-btn {
+  background: #f5f5f5;
+  color: #666;
+  border: 1px solid #ddd;
+  padding: 12px 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.cancel-btn:hover:not(:disabled) {
+  background: #e0e0e0;
+  border-color: #bbb;
+}
+
+.cancel-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.excel-format-info {
+  margin-top: 24px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #2196f3;
+}
+
+.excel-format-info h4 {
+  margin: 0 0 12px 0;
+  color: #333;
+  font-size: 16px;
+}
+
+.format-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  background: white;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.format-table th {
+  background: #2196f3;
+  color: white;
+  padding: 10px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.format-table td {
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 14px;
+  color: #333;
+}
+
+.format-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.format-table tbody tr:hover {
+  background: #f5f9ff;
+}
+
+.format-note {
+  margin: 12px 0 0 0;
+  color: #d32f2f;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .excel-upload-container {
+    padding: 16px;
+  }
+
+  .drop-zone {
+    padding: 30px 15px;
+    min-height: 150px;
+  }
+
+  .upload-icon {
+    font-size: 48px;
+  }
+
+  .upload-actions {
+    flex-direction: column;
+  }
+
+  .upload-btn,
+  .cancel-btn {
+    width: 100%;
+  }
+
+  .format-table {
+    font-size: 12px;
+  }
+
+  .format-table th,
+  .format-table td {
+    padding: 8px;
+  }
+}

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./Home.css";
 import { IoLogOutOutline } from "react-icons/io5";
 import toast, { Toaster } from "react-hot-toast";
+import ExcelUpload from "./ExcelUpload";
 
-const API_URL = "https://bfc-inventory-backend.onrender.com/api/categories";
+const API_URL = "http://localhost:5000/api/categories";
 
 function Home({ onLogout }) {
   const [categories, setCategories] = useState([]);
@@ -17,12 +18,9 @@ function Home({ onLogout }) {
   const [activeTab, setActiveTab] = useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
   const [editMode, setEditMode] = useState(false);
+  const [inputMode, setInputMode] = useState("manual"); // "manual" or "excel"
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  const fetchCategories = async () => {
+  const fetchCategories = useCallback(async () => {
     setLoading(true);
     try {
       const res = await fetch(API_URL);
@@ -35,7 +33,11 @@ function Home({ onLogout }) {
       toast.error("Failed to fetch categories");
     }
     setLoading(false);
-  };
+  }, [activeTab]);
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
 
   const handleItemChange = (idx, field, value) => {
     const newItems = [...items];
@@ -232,7 +234,27 @@ function Home({ onLogout }) {
         />
       </div>
 
-      <form onSubmit={handleSubmit} className="form">
+      {/* Input Mode Toggle */}
+      <div className="input-mode-tabs">
+        <button
+          type="button"
+          className={`mode-tab ${inputMode === "manual" ? "active" : ""}`}
+          onClick={() => setInputMode("manual")}
+        >
+          ✍️ Manual Entry
+        </button>
+        <button
+          type="button"
+          className={`mode-tab ${inputMode === "excel" ? "active" : ""}`}
+          onClick={() => setInputMode("excel")}
+        >
+          📊 Excel Upload
+        </button>
+      </div>
+
+      {/* Show either manual form or Excel upload based on mode */}
+      {inputMode === "manual" ? (
+        <form onSubmit={handleSubmit} className="form">
         <div className="form-group">
           <label>Category Name</label>
           <select
@@ -286,6 +308,9 @@ function Home({ onLogout }) {
           {loading ? "Saving..." : "Save Category"}
         </button>
       </form>
+      ) : (
+        <ExcelUpload onUploadSuccess={fetchCategories} />
+      )}
 
       <h3>Existing Categories</h3>
       <div className="category-tabs">

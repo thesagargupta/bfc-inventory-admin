@@ -39,6 +39,44 @@ h2, h3 {
   margin-bottom: 16px;
 }
 
+/* Input Mode Tabs */
+.input-mode-tabs {
+  display: flex;
+  gap: 12px;
+  margin: 20px 0;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 0;
+}
+
+.mode-tab {
+  background: transparent;
+  border: none;
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-bottom: 3px solid transparent;
+  position: relative;
+  bottom: -2px;
+}
+
+.mode-tab:hover {
+  color: #1c7c1c;
+  background: rgba(28, 124, 28, 0.05);
+}
+
+.mode-tab.active {
+  color: #1c7c1c;
+  border-bottom-color: #4caf50;
+  font-weight: 600;
+}
+
+.mode-tab:active {
+  transform: scale(0.98);
+}
+
 .form {
   display: flex;
   flex-direction: column;
